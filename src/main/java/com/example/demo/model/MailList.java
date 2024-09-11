@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 
 @Data
@@ -14,7 +16,10 @@ import java.time.Instant;
 @ToString
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
-public class MailList {
+public class MailList implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id", nullable = false)

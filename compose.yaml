@@ -15,7 +15,14 @@ services:
       start_period: 10s
     volumes:
       - db_data1:/var/lib/mysql
-
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass abcdefg
+    volumes:
+      - cache:/data
   backend:
     build: .
     ports:
@@ -36,3 +43,4 @@ services:
 
 volumes:
   db_data1:
+  cache:
