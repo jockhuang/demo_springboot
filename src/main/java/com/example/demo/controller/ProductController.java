@@ -3,13 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.model.MyResponse;
 import com.example.demo.model.PagenatedData;
 import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.service.ProductService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,13 +16,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.time.Instant;
-
 @RestController
 @RequestMapping("product")
 public class ProductController {
-    @Autowired
-    ProductRepository repository;
+
+    @Resource
+    private ProductService productService;
 
     @GetMapping("/products")
     @Operation(summary = "query products by sorting and pagination and filter by name.")
@@ -45,53 +43,35 @@ public class ProductController {
         }else{
             paging = PageRequest.of(pageIndex, pageSize);
         }
-        Page<Product> pageTuts;
-        if (search == null)
-            pageTuts = repository.findAll(paging);
-        else
-            pageTuts = repository.findByNameContaining(search, paging);
 
-        PagenatedData<Product> result = new PagenatedData<>(pageTuts.getContent(),pageTuts.getNumber()+1, pageSize,pageTuts.getTotalElements(),pageTuts.getTotalPages());
+        PagenatedData<Product> result = productService.getAllProducts(search,paging);
 
         return MyResponse.ok(result);
 
     }
 
-
-
     @GetMapping("{productId}")
     @Operation(summary = "Retrieve one product")
     public MyResponse getProduct(@Parameter(description = "ID of product to be retrieved", required = true)
                                 @PathVariable int productId) {
-        Product product = repository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product id not found - " + productId));
+        Product product = productService.getProductById(productId);
         return MyResponse.ok(product);
     }
 
     @PostMapping("")
     @Operation(summary = "add a new product")
     public MyResponse addProduct(@RequestBody Product product) {
-        product.setId(0);
-        Instant now = Instant.now();
-        product.setCreateDate(now);
-        product.setUpdateDate(now);
-        return MyResponse.ok(repository.save(product));
+        Product p = productService.addProduct(product);
+        return MyResponse.ok(p);
     }
 
     @Operation(summary = "Update an product",
             description = "Update an existing product. The response is updated Product object with id, first name, and last name.")
     @PutMapping("/{productId}")
     public MyResponse updateProduct(@PathVariable int productId, @RequestBody Product product) {
-        Product dbProduct = repository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product id not found - " + productId));
-        dbProduct.setName(product.getName());
-        dbProduct.setDescription(product.getDescription());
-        dbProduct.setPrice(product.getPrice());
-        dbProduct.setImageURL(product.getImageURL());
-        dbProduct.setIsRelease(product.getIsRelease());
-        Instant now = Instant.now();
-        dbProduct.setUpdateDate(now);
-        return MyResponse.ok(repository.save(dbProduct));
+        product.setId(productId);
+        Product p = productService.addProduct(product);
+        return MyResponse.ok(p);
     }
 
 
@@ -103,9 +83,7 @@ public class ProductController {
     @DeleteMapping("/{productId}")
     @Operation(summary = "delete a product via id")
     public MyResponse deleteProduct(@PathVariable int productId) {
-        Product product = repository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product id not found - " + productId));
-        repository.delete(product);
+        productService.deleteProduct(productId);
         return MyResponse.ok("Deleted product with id: " + productId);
     }
 }

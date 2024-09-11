@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 
 @Data
@@ -13,7 +15,10 @@ import java.time.Instant;
 @ToString
 @Entity
 @Table(name = "Products",uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
-public class Product {
+public class Product implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id", nullable = false)
