@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -67,8 +66,8 @@ public class ProductServiceImpl implements ProductService {
     @CacheEvict(value = "myCache", key = "'product_' + #productId")
     @Override
     public void deleteProduct(Integer productId) {
-        Product product = repository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product id not found - " + productId));
-        repository.delete(product);
+        repository.deleteById(productId);
     }
+
+
 }
