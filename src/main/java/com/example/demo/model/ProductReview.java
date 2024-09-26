@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,6 +10,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @Document("ProductReview")
 public class ProductReview {
     @Id

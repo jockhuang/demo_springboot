@@ -29,6 +29,13 @@ public class ProductController {
     @Resource
     private ProductReviewService productReviewService;
 
+    @GetMapping("{productId}")
+    @Operation(summary = "Retrieve one product")
+    public MyResponse getProduct(@Parameter(description = "ID of product to be retrieved", required = true)
+                                 @PathVariable int productId) {
+        Product product = productService.getProductById(productId);
+        return MyResponse.ok(product);
+    }
 
     @GetMapping("/products")
     @Operation(summary = "query products by sorting and pagination and filter by name.")
@@ -57,13 +64,7 @@ public class ProductController {
 
     }
 
-    @GetMapping("{productId}")
-    @Operation(summary = "Retrieve one product")
-    public MyResponse getProduct(@Parameter(description = "ID of product to be retrieved", required = true)
-                                @PathVariable int productId) {
-        Product product = productService.getProductById(productId);
-        return MyResponse.ok(product);
-    }
+
 
     @PostMapping("")
     @Operation(summary = "add a new product")
