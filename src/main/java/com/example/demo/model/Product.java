@@ -10,17 +10,18 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 @ToString
 @Entity
 @Table(name = "Products",uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
     private Integer id;
 

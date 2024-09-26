@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.model.MyResponse;
 import com.example.demo.model.PagenatedData;
 import com.example.demo.model.Product;
+import com.example.demo.model.ProductReview;
+import com.example.demo.service.ProductReviewService;
 import com.example.demo.service.ProductService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,12 +18,17 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("product")
 public class ProductController {
 
     @Resource
     private ProductService productService;
+    @Resource
+    private ProductReviewService productReviewService;
+
 
     @GetMapping("/products")
     @Operation(summary = "query products by sorting and pagination and filter by name.")
@@ -70,7 +77,7 @@ public class ProductController {
     @PutMapping("/{productId}")
     public MyResponse updateProduct(@PathVariable int productId, @RequestBody Product product) {
         product.setId(productId);
-        Product p = productService.addProduct(product);
+        Product p = productService.updateProduct(product);
         return MyResponse.ok(p);
     }
 
@@ -85,5 +92,20 @@ public class ProductController {
     public MyResponse deleteProduct(@PathVariable int productId) {
         productService.deleteProduct(productId);
         return MyResponse.ok("Deleted product with id: " + productId);
+    }
+
+    @PostMapping("/review")
+    @Operation(summary = "add a new review of product")
+    public MyResponse addProductReview(@RequestBody ProductReview productReview) {
+        ProductReview p = productReviewService.addProductReview(productReview);
+        return MyResponse.ok(p);
+    }
+
+    @GetMapping("/review/{productId}")
+    @Operation(summary = "get a product reviews")
+    public MyResponse getProductReview(@Parameter(description = "ID of product to be retrieved", required = true)
+                                 @PathVariable int productId) {
+        List<ProductReview> reviews = productReviewService.getProductReviewByProductId(productId);
+        return MyResponse.ok(reviews);
     }
 }
