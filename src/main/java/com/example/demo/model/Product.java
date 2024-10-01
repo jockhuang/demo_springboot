@@ -43,6 +43,7 @@ public class Product implements Serializable {
 
     @NotNull
     @Column(name = "IsRelease", nullable = false)
+    @Builder.Default
     private Boolean isRelease = false;
 
     @Column(name = "CreateDate")
