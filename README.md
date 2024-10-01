@@ -14,7 +14,7 @@ Redis Cache
 Unit Test
 
 
-## Integrating Make Into Your Docker Project
+## Integrating Make Into Docker Project
 * make build
 > build all or c=<name> containers images
 * make up
