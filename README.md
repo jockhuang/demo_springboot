@@ -14,11 +14,13 @@ Redis Cache
 Unit Test
 
 
-## Docker Compose support
-This project contains a Docker Compose file named compose.yaml. 
+## Integrating Make Into Your Docker Project
 * make build
+> build all or c=<name> containers images
 * make up
+> Start all or c=<name> containers in foreground
 * make clean
+> Clean all data
 
 ## FrontEnd Project 
 The [frontend](https://github.com/jockhuang/demo_frontend) project. 
