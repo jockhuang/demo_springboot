@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+
 @RestController
 @RequestMapping("subscription")
 public class MailListController {
@@ -36,13 +37,13 @@ public class MailListController {
     ) {
         pageIndex--;
         Pageable paging;
-        if(orderBy!=null){
-            if(isDesc){
+        if (orderBy != null) {
+            if (isDesc) {
                 paging = PageRequest.of(pageIndex, pageSize, Sort.by(orderBy).descending());
-            }else{
+            } else {
                 paging = PageRequest.of(pageIndex, pageSize, Sort.by(orderBy).ascending());
             }
-        }else{
+        } else {
             paging = PageRequest.of(pageIndex, pageSize);
         }
         Page<MailList> pageTuts;
@@ -51,12 +52,11 @@ public class MailListController {
         else
             pageTuts = repository.findByEmailContaining(search, paging);
 
-        PagenatedData<MailList> result = new PagenatedData<>(pageTuts.getContent(),pageTuts.getNumber()+1, pageSize,pageTuts.getTotalElements(),pageTuts.getTotalPages());
+        PagenatedData<MailList> result = new PagenatedData<>(pageTuts.getContent(), pageTuts.getNumber() + 1, pageSize, pageTuts.getTotalElements(), pageTuts.getTotalPages());
 
         return MyResponse.ok(result);
 
     }
-
 
 
     @GetMapping("{id}")
@@ -76,8 +76,6 @@ public class MailListController {
         subscription.setCreateDate(now);
         return MyResponse.ok(repository.save(subscription));
     }
-
-
 
 
     @ApiResponses({

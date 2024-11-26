@@ -6,17 +6,17 @@ import com.example.demo.model.Product;
 import com.example.demo.model.ProductReview;
 import com.example.demo.service.ProductReviewService;
 import com.example.demo.service.ProductService;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.annotation.Resource;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.annotation.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,22 +48,21 @@ public class ProductController {
     ) {
         pageIndex--;
         Pageable paging;
-        if(orderBy!=null){
-            if(isDesc){
+        if (orderBy != null) {
+            if (isDesc) {
                 paging = PageRequest.of(pageIndex, pageSize, Sort.by(orderBy).descending());
-            }else{
+            } else {
                 paging = PageRequest.of(pageIndex, pageSize, Sort.by(orderBy).ascending());
             }
-        }else{
+        } else {
             paging = PageRequest.of(pageIndex, pageSize);
         }
 
-        PagenatedData<Product> result = productService.getAllProducts(search,paging);
+        PagenatedData<Product> result = productService.getAllProducts(search, paging);
 
         return MyResponse.ok(result);
 
     }
-
 
 
     @PostMapping("")
@@ -84,7 +83,7 @@ public class ProductController {
 
 
     @ApiResponses({
-            @ApiResponse (responseCode = "200", content = {@Content(mediaType = "application/json",
+            @ApiResponse(responseCode = "200", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = Product.class))}),
             @ApiResponse(responseCode = "404", description = "Product not found",
                     content = @Content)})
@@ -105,7 +104,7 @@ public class ProductController {
     @GetMapping("/review/{productId}")
     @Operation(summary = "get a product reviews")
     public MyResponse getProductReview(@Parameter(description = "ID of product to be retrieved", required = true)
-                                 @PathVariable int productId) {
+                                       @PathVariable int productId) {
         List<ProductReview> reviews = productReviewService.getProductReviewByProductId(productId);
         return MyResponse.ok(reviews);
     }

@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ProductReviewService {
     ProductReview addProductReview(ProductReview productReview);
+
     List<ProductReview> getProductReviewByProductId(Integer productId);
 }

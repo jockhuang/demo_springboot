@@ -33,10 +33,9 @@ public class ProductServiceImpl implements ProductService {
         else
             pageTuts = repository.findByNameContaining(filter, paging);
 
-        return new PagenatedData<>(pageTuts.getContent(),pageTuts.getNumber()+1, paging.getPageSize(),pageTuts.getTotalElements(),pageTuts.getTotalPages());
+        return new PagenatedData<>(pageTuts.getContent(), pageTuts.getNumber() + 1, paging.getPageSize(), pageTuts.getTotalElements(), pageTuts.getTotalPages());
     }
 
-    @Cacheable(value = "myCache", key = "'product_' + #product.id")
     @Override
     public Product addProduct(Product product) {
         product.setId(0);
@@ -47,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-    @Cacheable(value = "myCache", key = "'product_' + #product.id")
+    @CacheEvict(value = "myCache", key = "'product_' + #product.id")
     @Override
     public Product updateProduct(Product product) {
         Product dbProduct = repository.findById(product.getId())
@@ -68,6 +67,4 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Integer productId) {
         repository.deleteById(productId);
     }
-
-
 }
