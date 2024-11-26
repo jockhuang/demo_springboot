@@ -16,7 +16,7 @@ import java.time.Instant;
 @Builder
 @ToString
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class MailList implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

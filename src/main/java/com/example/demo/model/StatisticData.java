@@ -9,8 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class StatisticData
-{
+public class StatisticData {
     private long releasedProduct;
     private long unReleasedProduct;
     private long subscription;

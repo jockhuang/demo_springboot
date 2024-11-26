@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Pageable sortedByPriceDescNameAsc =
- *   PageRequest.of(0, 5, Sort.by("email").descending().and(Sort.by("createDate")));
+ * PageRequest.of(0, 5, Sort.by("email").descending().and(Sort.by("createDate")));
  */
 public interface MailListRepository extends JpaRepository<MailList, Integer> {
     Page<MailList> findByEmailContaining(String email, Pageable pageable);

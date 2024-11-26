@@ -13,7 +13,7 @@ import java.time.Instant;
 @Builder
 @ToString
 @Entity
-@Table(name = "Products",uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
+@Table(name = "Products", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product implements Serializable {
